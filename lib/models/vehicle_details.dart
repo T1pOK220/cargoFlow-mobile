@@ -1,4 +1,3 @@
-
 class VehicleDetails {
   final int vehicleId;
   final String brand;
@@ -98,7 +97,7 @@ enum VehicleStatus {
 
   factory VehicleStatus.fromString(String value) {
     return VehicleStatus.values.firstWhere(
-          (status) => status.dbValue == value,
+      (status) => status.dbValue == value,
       orElse: () => VehicleStatus.unavailable,
     );
   }

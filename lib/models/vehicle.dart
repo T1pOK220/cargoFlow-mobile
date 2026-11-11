@@ -1,5 +1,6 @@
 import 'package:cargo_flow/models/vehicle_card_data.dart';
 import 'package:cargo_flow/models/vehicle_status.dart';
+
 double? _toDouble(dynamic v) {
   if (v == null) return null;
   if (v is num) return v.toDouble();
@@ -34,8 +35,7 @@ class Vehicle implements VehicleCardData {
   String get capacityText => capacity?.toString() ?? '—';
 
   @override
-  String get deliveryPriceText =>
-      deliveryPrice?.toString() ?? '—';
+  String get deliveryPriceText => deliveryPrice?.toString() ?? '—';
 
   @override
   String? get routeText => null;
@@ -65,9 +65,7 @@ class Vehicle implements VehicleCardData {
       type: json['type']?.toString() ?? '',
       year: _toInt(json['year']),
       cargoVolume: _toDouble(json['cargo_volume']),
-      status:VehicleStatus.fromString(
-        json["status"] as String,
-      ),
+      status: VehicleStatus.fromString(json["status"] as String),
       description: json['description']?.toString(),
       avatarUrl: json['v_avatar_url']?.toString(),
       routeId: _toInt(json['routes_route_id']),
@@ -91,5 +89,4 @@ class Vehicle implements VehicleCardData {
     'routes_route_id': routeId,
     'delivery_price': deliveryPrice,
   };
-
 }

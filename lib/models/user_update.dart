@@ -28,7 +28,7 @@ class UserUpdate implements JsonModel {
       'name': name,
       'last_name': lastName,
       'phone': phone,
-      'email': email
+      'email': email,
     };
   }
 }

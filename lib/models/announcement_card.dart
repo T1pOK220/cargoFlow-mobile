@@ -1,4 +1,5 @@
 import 'package:cargo_flow/models/json_model.dart';
+
 class AnnouncementCard implements JsonModel {
   final int announcementId;
   final String createDate;

@@ -8,16 +8,20 @@ class CargosService {
   Future<dynamic> getCargos() async {
     return await _api.get('cargos');
   }
-  Future<dynamic> filtersCargo(dynamic filters) async{
-    return await _api.post('cargos/filter',filters);
+
+  Future<dynamic> filtersCargo(dynamic filters) async {
+    return await _api.post('cargos/filter', filters);
   }
-  Future<dynamic> createCargo(dynamic cargo) async{
-    return await _api.post("cargos/create",cargo);
+
+  Future<dynamic> createCargo(dynamic cargo) async {
+    return await _api.post("cargos/create", cargo);
   }
-  Future<Map<String,dynamic>> cargoDetails(int id) async{
+
+  Future<Map<String, dynamic>> cargoDetails(int id) async {
     return await _api.get('cargos/info/$id');
   }
-  Future<dynamic> getCargosByUser()async{
+
+  Future<dynamic> getCargosByUser() async {
     return await _api.get('cargos/byUser');
   }
 }

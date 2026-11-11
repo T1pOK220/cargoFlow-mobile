@@ -52,9 +52,7 @@ class _CargoDetailsScreenState extends State<CargoDetailsScreen> {
             else if (c == null)
               SliverFillRemaining(
                 hasScrollBody: false,
-                child: Center(
-                  child: Text('Не вдалося завантажити дані'),
-                ),
+                child: Center(child: Text('Не вдалося завантажити дані')),
               )
             else
               SliverPadding(
@@ -99,15 +97,16 @@ class _CargoDetailsScreenState extends State<CargoDetailsScreen> {
                       children: [
                         _InfoRow('Завантаження', _dateTime(c.dateFrom)),
                         _InfoRow('Доставка до', _dateTime(c.dateTo)),
-                        _InfoRow('Оголошення створено', _dateTime(c.createDate)),
+                        _InfoRow(
+                          'Оголошення створено',
+                          _dateTime(c.createDate),
+                        ),
                       ],
                     ),
                     _Section(
                       title: 'Оплата',
                       icon: Icons.payments_outlined,
-                      children: [
-                        _InfoRow('Сума', '${_num(c.amount)} ₴'),
-                      ],
+                      children: [_InfoRow('Сума', '${_num(c.amount)} ₴')],
                     ),
                     _Section(
                       title: 'Замовник',
@@ -133,6 +132,7 @@ String _two(int n) => n.toString().padLeft(2, '0');
 
 String _dateTime(DateTime d) =>
     '${_two(d.day)}.${_two(d.month)}.${d.year} ${_two(d.hour)}:${_two(d.minute)}';
+
 class _CargoHeader extends StatelessWidget {
   const _CargoHeader({required this.c});
   final CargoDetails c;
@@ -162,8 +162,9 @@ class _CargoHeader extends StatelessWidget {
                 Expanded(
                   child: Text(
                     c.type,
-                    style: theme.textTheme.titleLarge
-                        ?.copyWith(fontWeight: FontWeight.w700),
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -191,8 +192,9 @@ class _CargoHeader extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               '${_num(c.distance)} км • ${_num(c.weight)} кг',
-              style: theme.textTheme.bodyMedium
-                  ?.copyWith(color: scheme.onSurfaceVariant),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: scheme.onSurfaceVariant,
+              ),
             ),
           ],
         ),
@@ -227,6 +229,7 @@ class _StatusChip extends StatelessWidget {
     );
   }
 }
+
 class _Section extends StatelessWidget {
   const _Section({
     required this.title,
@@ -261,8 +264,9 @@ class _Section extends StatelessWidget {
                   const SizedBox(width: 8),
                   Text(
                     title,
-                    style: theme.textTheme.titleMedium
-                        ?.copyWith(fontWeight: FontWeight.w600),
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ],
               ),
@@ -293,8 +297,9 @@ class _InfoRow extends StatelessWidget {
             flex: 4,
             child: Text(
               label,
-              style: theme.textTheme.bodyMedium
-                  ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
             ),
           ),
           Expanded(
@@ -302,8 +307,9 @@ class _InfoRow extends StatelessWidget {
             child: Text(
               value,
               textAlign: TextAlign.end,
-              style: theme.textTheme.bodyMedium
-                  ?.copyWith(fontWeight: FontWeight.w600),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ],
@@ -311,6 +317,7 @@ class _InfoRow extends StatelessWidget {
     );
   }
 }
+
 class _RouteBlock extends StatelessWidget {
   const _RouteBlock({required this.c});
   final CargoDetails c;
@@ -330,19 +337,26 @@ class _RouteBlock extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(city,
-                    style: theme.textTheme.bodyLarge
-                        ?.copyWith(fontWeight: FontWeight.w600)),
+                Text(
+                  city,
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
                 if (address != null && address.isNotEmpty)
-                  Text(address,
-                      style: theme.textTheme.bodySmall
-                          ?.copyWith(color: scheme.onSurfaceVariant)),
+                  Text(
+                    address,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: scheme.onSurfaceVariant,
+                    ),
+                  ),
               ],
             ),
           ),
         ],
       );
     }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -363,6 +377,7 @@ class _RouteBlock extends StatelessWidget {
     );
   }
 }
+
 class _OwnerBlock extends StatelessWidget {
   const _OwnerBlock({required this.c});
   final CargoDetails c;
@@ -370,9 +385,8 @@ class _OwnerBlock extends StatelessWidget {
   Future<void> _launch(BuildContext context, Uri uri) async {
     final ok = await launchUrl(uri);
     if (!ok && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Не вдалося відкрити')),
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Не вдалося відкрити')));
     }
   }
 
@@ -388,21 +402,23 @@ class _OwnerBlock extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 28,
-              backgroundImage:
-              hasAvatar ? NetworkImage('$baseUrl${c.avatarUrl}') : null,
+              backgroundImage: hasAvatar
+                  ? NetworkImage('$baseUrl${c.avatarUrl}')
+                  : null,
               child: hasAvatar
                   ? null
                   : Text(
-                c.name.isNotEmpty ? c.name[0].toUpperCase() : '?',
-                style: theme.textTheme.titleLarge,
-              ),
+                      c.name.isNotEmpty ? c.name[0].toUpperCase() : '?',
+                      style: theme.textTheme.titleLarge,
+                    ),
             ),
             const SizedBox(width: 12),
             Expanded(
               child: Text(
                 fullName,
-                style: theme.textTheme.titleMedium
-                    ?.copyWith(fontWeight: FontWeight.w600),
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ],
@@ -428,7 +444,8 @@ class _OwnerBlock extends StatelessWidget {
         SizedBox(
           width: double.infinity,
           child: FilledButton.icon(
-            onPressed: () => _launch(context, Uri(scheme: 'tel', path: c.phone)),
+            onPressed: () =>
+                _launch(context, Uri(scheme: 'tel', path: c.phone)),
             icon: const Icon(Icons.call),
             label: const Text('Зателефонувати'),
           ),

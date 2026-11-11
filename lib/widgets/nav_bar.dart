@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:cargo_flow/theme/app_theme.dart';
 
@@ -16,26 +15,19 @@ class NavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        border: Border(
-          top: BorderSide(
-            color: Color(0xFFE0E0E0),
-            width: 1,
-          ),
-        ),
+        border: Border(top: BorderSide(color: Color(0xFFE0E0E0), width: 1)),
       ),
       child: NavigationBarTheme(
         data: NavigationBarThemeData(
           backgroundColor: AppTheme.background,
           labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-          iconTheme: WidgetStateProperty.resolveWith<IconThemeData>(
-                (states) {
-              final selected = states.contains(WidgetState.selected);
+          iconTheme: WidgetStateProperty.resolveWith<IconThemeData>((states) {
+            final selected = states.contains(WidgetState.selected);
 
-              return IconThemeData(
-                color: selected ? AppTheme.orange : Colors.black,
-              );
-            },
-          ),
+            return IconThemeData(
+              color: selected ? AppTheme.orange : Colors.black,
+            );
+          }),
         ),
         child: NavigationBar(
           selectedIndex: selectedIndex,

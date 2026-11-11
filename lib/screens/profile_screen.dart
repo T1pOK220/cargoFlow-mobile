@@ -187,8 +187,8 @@ class _MyCargosTabState extends State<_MyCargosTab> {
             key: ValueKey(a.announcementId),
             from: a.fromCity,
             to: a.toCity,
-            price: formatPrice(a.amount),
-            date: formatDate(a.createDate),
+            price: a.amount,
+            date: a.createDate,
             type: a.type,
             distance: a.distance,
             onTap: () => context.push('/cargos/${a.announcementId}'),
@@ -233,6 +233,24 @@ class _PaymentsTabState extends State<_PaymentsTab> {
       if (mounted) AppSnack.error(context, 'Не вдалося поповнити рахунок');
     }
   }
+  Future<void> _createBill() async {
+    final result = await showDialog<Map<String, String>>(
+      context: context,
+      builder: (_) => const _CreateBillDialog(),
+    );
+    if (result == null || !mounted) return;
+
+    try {
+      await context.read<PaymentProvider>().createBill(
+        bill_title: result["bill_title"],
+        bill_number: result['bill_number']!,
+      );
+      if (mounted) AppSnack.success(context, 'Рахунок створено');
+    } catch (e, st) {
+      debugPrint('createBill error: $e\n$st');
+      if (mounted) AppSnack.error(context, 'Не вдалося створити рахунок');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -242,29 +260,53 @@ class _PaymentsTabState extends State<_PaymentsTab> {
       return const Center(child: CircularProgressIndicator());
     }
 
+    final bill = p.bill;
+
     return RefreshIndicator(
-      onRefresh: p.getPayments,
+      onRefresh: () async {
+        await p.getBill();
+        await p.getPayments();
+      },
       child: ListView(
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.all(16),
         children: [
-          InfoSection(
-            title: 'Рахунок',
-            icon: Icons.account_balance_wallet_outlined,
-            children: [
-              InfoRow('Номер рахунку', p.bill?.billNumber ?? '—'),
-              InfoRow('Баланс','${p.bill?.balance} grn'),
-              const SizedBox(height: 8),
-              SizedBox(
-                width: double.infinity,
-                child: FilledButton.icon(
-                  onPressed: _deposit,
-                  icon: const Icon(Icons.add_card),
-                  label: const Text('Поповнити рахунок'),
+          if (bill != null)
+            InfoSection(
+              title: 'Рахунок',
+              icon: Icons.account_balance_wallet_outlined,
+              children: [
+                InfoRow('Номер рахунку', bill.billNumber ?? '—'),
+                InfoRow('Баланс', '${bill.balance} грн'),
+                const SizedBox(height: 8),
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton.icon(
+                    onPressed: _deposit,
+                    icon: const Icon(Icons.add_card),
+                    label: const Text('Поповнити рахунок'),
+                  ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            )
+          else
+            InfoSection(
+              title: 'Рахунок',
+              icon: Icons.account_balance_wallet_outlined,
+              children: [
+                const Text('У вас ще немає рахунку'),
+                const SizedBox(height: 8),
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton.icon(
+                    onPressed: _createBill,
+                    icon: const Icon(Icons.add),
+                    label: const Text('Створити рахунок'),
+                  ),
+                ),
+              ],
+            ),
+          const SizedBox(height: 16),
           InfoSection(
             title: 'Історія платежів',
             icon: Icons.receipt_long_outlined,
@@ -277,8 +319,88 @@ class _PaymentsTabState extends State<_PaymentsTab> {
     );
   }
 }
+class _CreateBillDialog extends StatefulWidget {
+  const _CreateBillDialog({super.key});
 
+  @override
+  State<_CreateBillDialog> createState() => _CreateBillDialogState();
+}
 
+class _CreateBillDialogState extends State<_CreateBillDialog> {
+  final _formKey = GlobalKey<FormState>();
+  final _name = TextEditingController();
+  final _number = TextEditingController();
+
+  @override
+  void dispose() {
+    _name.dispose();
+    _number.dispose();
+    super.dispose();
+  }
+
+  void _submit() {
+    if (!_formKey.currentState!.validate()) return;
+    Navigator.of(context).pop({
+      'bill_title': _name.text.trim(),
+      'bill_number': _number.text,
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Новий рахунок'),
+      content: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextFormField(
+              controller: _name,
+              textInputAction: TextInputAction.next,
+              textCapitalization: TextCapitalization.sentences,
+              decoration: const InputDecoration(
+                labelText: 'Назва',
+                hintText: 'Наприклад, Основний',
+              ),
+              validator: (v) {
+                if (v == null || v.trim().length < 2) {
+                  return 'Введіть назву (мінімум 2 символи)';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 12),
+            TextFormField(
+              controller: _number,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                labelText: 'Номер рахунку',
+                hintText: 'хххх-хххх-хххх-хххх',
+              ),
+              validator: (v) {
+                final ok = RegExp(r'^\d{4} \d{4} \d{4} \d{4}$')
+                    .hasMatch(v ?? '');
+                return ok ? null : 'Формат: хххх хххх хххх хххх';
+              },
+              onFieldSubmitted: (_) => _submit(),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('Скасувати'),
+        ),
+        FilledButton(
+          onPressed: _submit,
+          child: const Text('Створити'),
+        ),
+      ],
+    );
+  }
+}
 class _PaymentTile extends StatelessWidget {
   const _PaymentTile(this.p);
 
@@ -374,11 +496,19 @@ class _VehiclesTabState extends State<_VehiclesTab> {
       children: [
         RefreshIndicator(
           onRefresh: p.getMyVehicles,
-          child: items.isEmpty && !p.isLoading
-              ? ListView(children: const [
-            SizedBox(height: 120),
-            Center(child: Text('У вас ще немає автомобілів')),
-          ])
+          child: items.isEmpty
+              ? Center(
+            child: Text(
+              'У вас ще немає автомобілів',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey.shade600,
+                letterSpacing: 0.3,
+              ),
+            ),
+          )
               : ListView.builder(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 88),
             itemCount: items.length,
@@ -566,10 +696,10 @@ class _SettingsTabState extends State<_SettingsTab> {
     setState(() => _savingProfile = true);
     try {
       await context.read<AuthProvider>().updateProfile(
-        _name.text.trim(),
-        _lastName.text.trim(),
-        _email.text.trim(),
-        _phone.text.trim(),
+        name:_name.text.trim(),
+        lastName:_lastName.text.trim(),
+        email:_email.text.trim(),
+        phone:_phone.text.trim(),
       );
       if (mounted) AppSnack.success(context, 'Дані збережено');
     } catch (_) {
@@ -578,7 +708,6 @@ class _SettingsTabState extends State<_SettingsTab> {
       if (mounted) setState(() => _savingProfile = false);
     }
   }
-
   Future<void> _changePassword() async {
     FocusScope.of(context).unfocus();
     if (!_passwordKey.currentState!.validate()) return;

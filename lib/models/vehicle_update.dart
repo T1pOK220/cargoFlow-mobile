@@ -3,7 +3,7 @@ import 'package:cargo_flow/models/multipart.dart';
 import 'package:cargo_flow/models/vehicle_status.dart';
 import 'package:image_picker/image_picker.dart';
 
-class VehicleUpdate implements JsonModel,MultipartModel {
+class VehicleUpdate implements JsonModel, MultipartModel {
   final int? id;
   final String? brand;
   final String? model;

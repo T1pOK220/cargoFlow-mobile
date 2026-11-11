@@ -28,13 +28,18 @@ class InfoSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(children: [
-                Icon(icon, size: 20, color: theme.colorScheme.primary),
-                const SizedBox(width: 8),
-                Text(title,
-                    style: theme.textTheme.titleMedium
-                        ?.copyWith(fontWeight: FontWeight.w600)),
-              ]),
+              Row(
+                children: [
+                  Icon(icon, size: 20, color: theme.colorScheme.primary),
+                  const SizedBox(width: 8),
+                  Text(
+                    title,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
               const SizedBox(height: 12),
               ...children,
             ],
@@ -60,16 +65,22 @@ class InfoRow extends StatelessWidget {
         children: [
           Expanded(
             flex: 4,
-            child: Text(label,
-                style: theme.textTheme.bodyMedium
-                    ?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+            child: Text(
+              label,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
           ),
           Expanded(
             flex: 5,
-            child: Text(value,
-                textAlign: TextAlign.end,
-                style: theme.textTheme.bodyMedium
-                    ?.copyWith(fontWeight: FontWeight.w600)),
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
         ],
       ),

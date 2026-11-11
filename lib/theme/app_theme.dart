@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class AppTheme {
@@ -32,14 +31,8 @@ class AppTheme {
         bodyLarge: TextStyle(color: dark),
         bodyMedium: TextStyle(color: dark),
         bodySmall: TextStyle(color: textSecondary),
-        titleLarge: TextStyle(
-          color: dark,
-          fontWeight: FontWeight.bold,
-        ),
-        titleMedium: TextStyle(
-          color: dark,
-          fontWeight: FontWeight.w600,
-        ),
+        titleLarge: TextStyle(color: dark, fontWeight: FontWeight.bold),
+        titleMedium: TextStyle(color: dark, fontWeight: FontWeight.w600),
       ),
 
       // AppBar
@@ -54,9 +47,7 @@ class AppTheme {
       cardTheme: CardThemeData(
         color: white,
         elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
         margin: EdgeInsets.zero,
       ),
 
@@ -71,9 +62,7 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),
-          textStyle: const TextStyle(
-            fontWeight: FontWeight.w600,
-          ),
+          textStyle: const TextStyle(fontWeight: FontWeight.w600),
         ),
       ),
 
@@ -94,9 +83,7 @@ class AppTheme {
         style: TextButton.styleFrom(
           foregroundColor: orange,
           minimumSize: const Size(0, 44),
-          textStyle: const TextStyle(
-            fontWeight: FontWeight.w600,
-          ),
+          textStyle: const TextStyle(fontWeight: FontWeight.w600),
         ),
       ),
 
@@ -119,9 +106,7 @@ class AppTheme {
         indicatorColor: orange,
         indicatorSize: TabBarIndicatorSize.label,
         dividerColor: inputBorder,
-        labelStyle: TextStyle(
-          fontWeight: FontWeight.w600,
-        ),
+        labelStyle: TextStyle(fontWeight: FontWeight.w600),
       ),
 
       // Input fields
@@ -141,10 +126,7 @@ class AppTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-            color: orange,
-            width: 1.5,
-          ),
+          borderSide: const BorderSide(color: orange, width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -153,33 +135,24 @@ class AppTheme {
       ),
 
       // Progress indicator
-      progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: orange,
-      ),
+      progressIndicatorTheme: const ProgressIndicatorThemeData(color: orange),
 
       // SnackBar
       snackBarTheme: SnackBarThemeData(
         backgroundColor: dark,
         contentTextStyle: const TextStyle(color: white),
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
 
       // Dialog
       dialogTheme: DialogThemeData(
         backgroundColor: white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       ),
 
       // Dividers
-      dividerTheme: const DividerThemeData(
-        color: inputBorder,
-        thickness: 1,
-      ),
+      dividerTheme: const DividerThemeData(color: inputBorder, thickness: 1),
     );
   }
 }

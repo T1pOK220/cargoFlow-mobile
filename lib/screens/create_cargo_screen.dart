@@ -7,6 +7,7 @@ import 'package:cargo_flow/providers/announcement_provider.dart';
 import 'package:cargo_flow/widgets/auth_field.dart';
 import 'package:cargo_flow/widgets/hero_banner.dart';
 import 'package:cargo_flow/models/create_cargo.dart';
+
 class CreateCargoScreen extends StatefulWidget {
   const CreateCargoScreen({super.key});
 
@@ -41,9 +42,20 @@ class _CreateCargoScreenState extends State<CreateCargoScreen> {
   bool _isSubmitting = false;
 
   List<TextEditingController> get _all => [
-    _fromCity, _toCity, _addressFrom, _addressTo, _distance,
-    _dateFromText, _dateToText, _type, _height, _length, _width,
-    _amount, _description,_weight
+    _fromCity,
+    _toCity,
+    _addressFrom,
+    _addressTo,
+    _distance,
+    _dateFromText,
+    _dateToText,
+    _type,
+    _height,
+    _length,
+    _width,
+    _amount,
+    _description,
+    _weight,
   ];
 
   @override
@@ -90,8 +102,13 @@ class _CreateCargoScreenState extends State<CreateCargoScreen> {
     );
     if (time == null || !mounted) return;
 
-    final value =
-    DateTime(date.year, date.month, date.day, time.hour, time.minute);
+    final value = DateTime(
+      date.year,
+      date.month,
+      date.day,
+      time.hour,
+      time.minute,
+    );
 
     setState(() {
       if (isFrom) {
@@ -103,12 +120,13 @@ class _CreateCargoScreenState extends State<CreateCargoScreen> {
       }
     });
   }
+
   Future<void> _submit() async {
     FocusScope.of(context).unfocus();
     if (!_formKey.currentState!.validate()) return;
 
     if (!_dateTo!.isAfter(_dateFrom!)) {
-       AppSnack.info(context, "Доставка має бути пізніше за відправлення");
+      AppSnack.info(context, "Доставка має бути пізніше за відправлення");
       return;
     }
 
@@ -126,23 +144,24 @@ class _CreateCargoScreenState extends State<CreateCargoScreen> {
       length: _num(_length)!,
       width: _num(_width)!,
       description: _description.text.trim(),
-        weight:_num(_weight)!,
+      weight: _num(_weight)!,
     );
 
     setState(() => _isSubmitting = true);
     try {
       await context.read<AnnouncementProvider>().createCargo(cargo);
       if (!mounted) return;
-       AppSnack.success(context, "Оголошення успішно створено");
+      AppSnack.success(context, "Оголошення успішно створено");
       await context.read<AnnouncementProvider>().fetchAnnouncements();
       dispose();
       context.go('/cargos');
     } catch (_) {
-      if (mounted)   AppSnack.error(context, "Невдалось створити оголошення");
+      if (mounted) AppSnack.error(context, "Невдалось створити оголошення");
     } finally {
       if (mounted) setState(() => _isSubmitting = false);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     const gap = SizedBox(height: 12);
@@ -212,29 +231,34 @@ class _CreateCargoScreenState extends State<CreateCargoScreen> {
                 ],
               ),
               gap,
-              Row(children: [
-                Expanded(child:     AuthField(
-                  controller: _distance,
-                  hint: 'Відстань, км',
-                  icon: Icons.route_outlined,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  validator: _positive,
-                  textInputAction: TextInputAction.next,
-                ),
-                ),
-            
-                hgap,
-               Expanded(child:  AuthField(
-                 controller: _weight,
-                 hint: 'Вага,кг',
-                 icon: Icons.scale_outlined,
-                 keyboardType: TextInputType.number,
-                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                 validator: _positive,
-                 textInputAction: TextInputAction.next,
-               ),)
-              ],),
+              Row(
+                children: [
+                  Expanded(
+                    child: AuthField(
+                      controller: _distance,
+                      hint: 'Відстань, км',
+                      icon: Icons.route_outlined,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      validator: _positive,
+                      textInputAction: TextInputAction.next,
+                    ),
+                  ),
+
+                  hgap,
+                  Expanded(
+                    child: AuthField(
+                      controller: _weight,
+                      hint: 'Вага,кг',
+                      icon: Icons.scale_outlined,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      validator: _positive,
+                      textInputAction: TextInputAction.next,
+                    ),
+                  ),
+                ],
+              ),
               const _SectionTitle('Дата'),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -345,13 +369,13 @@ class _CreateCargoScreenState extends State<CreateCargoScreen> {
                   onPressed: _isSubmitting ? null : _submit,
                   child: _isSubmitting
                       ? const SizedBox(
-                    height: 22,
-                    width: 22,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: Colors.white,
-                    ),
-                  )
+                          height: 22,
+                          width: 22,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        )
                       : const Text('Опублікувати вантаж'),
                 ),
               ),

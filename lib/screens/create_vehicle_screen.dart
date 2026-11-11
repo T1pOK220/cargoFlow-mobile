@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+
 import 'package:cargo_flow/models/vehicle_create.dart';
 import 'package:cargo_flow/providers/vehicle_provider.dart';
 import 'package:cargo_flow/theme/app_theme.dart';
@@ -23,11 +24,7 @@ class _VehicleCreateScreenState extends State<VehicleCreateScreen> {
     'Тягач',
     'Бус',
   ];
-  static const _statuses = [
-    'Доступний',
-    'Зайнятий',
-    'На обслуговуванні',
-  ];
+  static const _statuses = ['Доступний', 'Зайнятий', 'На обслуговуванні'];
 
   final _formKey = GlobalKey<FormState>();
   final _picker = ImagePicker();
@@ -136,10 +133,7 @@ class _VehicleCreateScreenState extends State<VehicleCreateScreen> {
           child: ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              _Section(
-                title: 'Фото',
-                children: [_buildImagePicker()],
-              ),
+              _Section(title: 'Фото', children: [_buildImagePicker()]),
               const SizedBox(height: 16),
               _Section(
                 title: 'Основна інформація',
@@ -214,7 +208,8 @@ class _VehicleCreateScreenState extends State<VehicleCreateScreen> {
                           hint: 'Вантажопідйомність',
                           icon: Icons.scale_outlined,
                           keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true),
+                            decimal: true,
+                          ),
                           inputFormatters: [_decimalFormatter],
                           validator: _positiveNumber,
                         ),
@@ -226,7 +221,8 @@ class _VehicleCreateScreenState extends State<VehicleCreateScreen> {
                           hint: 'Об\'єм, м³',
                           icon: Icons.inventory_2_outlined,
                           keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true),
+                            decimal: true,
+                          ),
                           inputFormatters: [_decimalFormatter],
                           validator: _positiveNumber,
                         ),
@@ -292,13 +288,13 @@ class _VehicleCreateScreenState extends State<VehicleCreateScreen> {
                 onPressed: _loading ? null : _submit,
                 child: _loading
                     ? const SizedBox(
-                  height: 22,
-                  width: 22,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2.5,
-                    color: AppTheme.white,
-                  ),
-                )
+                        height: 22,
+                        width: 22,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2.5,
+                          color: AppTheme.white,
+                        ),
+                      )
                     : const Text('Створити'),
               ),
               const SizedBox(height: 16),
@@ -324,45 +320,52 @@ class _VehicleCreateScreenState extends State<VehicleCreateScreen> {
         clipBehavior: Clip.antiAlias,
         child: _imageBytes == null
             ? const Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.add_a_photo_outlined,
-                size: 36, color: AppTheme.inputIcon),
-            SizedBox(height: 8),
-            Text(
-              'Додати фото',
-              style: TextStyle(color: AppTheme.textSecondary),
-            ),
-          ],
-        )
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.add_a_photo_outlined,
+                    size: 36,
+                    color: AppTheme.inputIcon,
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Додати фото',
+                    style: TextStyle(color: AppTheme.textSecondary),
+                  ),
+                ],
+              )
             : Stack(
-          fit: StackFit.expand,
-          children: [
-            Image.memory(_imageBytes!, fit: BoxFit.cover),
-            Positioned(
-              top: 8,
-              right: 8,
-              child: Material(
-                color: AppTheme.dark.withValues(alpha: 0.7),
-                shape: const CircleBorder(),
-                child: IconButton(
-                  icon: const Icon(Icons.close,
-                      color: AppTheme.white, size: 20),
-                  onPressed: () => setState(() {
-                    _image = null;
-                    _imageBytes = null;
-                  }),
-                ),
+                fit: StackFit.expand,
+                children: [
+                  Image.memory(_imageBytes!, fit: BoxFit.cover),
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: Material(
+                      color: AppTheme.dark.withValues(alpha: 0.7),
+                      shape: const CircleBorder(),
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.close,
+                          color: AppTheme.white,
+                          size: 20,
+                        ),
+                        onPressed: () => setState(() {
+                          _image = null;
+                          _imageBytes = null;
+                        }),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }
 
-  static final _decimalFormatter =
-  FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'));
+  static final _decimalFormatter = FilteringTextInputFormatter.allow(
+    RegExp(r'[0-9.,]'),
+  );
 
   Widget _field({
     required TextEditingController controller,
@@ -385,10 +388,7 @@ class _VehicleCreateScreenState extends State<VehicleCreateScreen> {
         textCapitalization: textCapitalization,
         textInputAction: textInputAction,
         maxLines: maxLines,
-        decoration: InputDecoration(
-          hintText: hint,
-          prefixIcon: Icon(icon),
-        ),
+        decoration: InputDecoration(hintText: hint, prefixIcon: Icon(icon)),
       ),
     );
   }
@@ -406,10 +406,7 @@ class _VehicleCreateScreenState extends State<VehicleCreateScreen> {
         // ignore: deprecated_member_use
         value: value,
         isExpanded: true,
-        decoration: InputDecoration(
-          hintText: hint,
-          prefixIcon: Icon(icon),
-        ),
+        decoration: InputDecoration(hintText: hint, prefixIcon: Icon(icon)),
         items: [
           for (final i in items) DropdownMenuItem(value: i, child: Text(i)),
         ],

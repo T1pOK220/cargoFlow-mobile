@@ -30,7 +30,7 @@ class CreateCargo implements JsonModel {
     required this.dateFrom,
     required this.dateTo,
     required this.weight,
-});
+  });
   @override
   Map<String, dynamic> toJson() {
     return {
@@ -47,9 +47,10 @@ class CreateCargo implements JsonModel {
       'length': length,
       'width': width,
       'description': description,
-      "weight":weight,
+      "weight": weight,
     };
   }
+
   String? validate() {
     if (amount <= 0) {
       return 'Сума має бути більшою за нуль';

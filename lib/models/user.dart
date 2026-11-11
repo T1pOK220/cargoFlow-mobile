@@ -1,5 +1,6 @@
 import 'package:cargo_flow/models/json_model.dart';
-class User implements JsonModel  {
+
+class User implements JsonModel {
   final int? userId;
   final String name;
   final String lastName;
@@ -16,25 +17,25 @@ class User implements JsonModel  {
     required this.password,
     this.avatarUrl,
   });
-  factory User.fromJson(Map<String,dynamic> json){
+  factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      userId:json['user_id'] as int,
-      name:json['name'] as String,
-      lastName:json["last_name"] as String,
-      email:json['email'] as String,
+      userId: json['user_id'] as int,
+      name: json['name'] as String,
+      lastName: json["last_name"] as String,
+      email: json['email'] as String,
       phone: json['phone'] as String,
-        password:json['password'] as String,
-      avatarUrl: json['avatar_url'] as String?
+      password: json['password'] as String,
+      avatarUrl: json['avatar_url'] as String?,
     );
-}
+  }
   @override
   Map<String, dynamic> toJson() {
     return {
       "name": name,
-      "last_name":lastName,
-      "phone":phone,
-      "email":email,
-      "password":password,
+      "last_name": lastName,
+      "phone": phone,
+      "email": email,
+      "password": password,
     };
   }
 }

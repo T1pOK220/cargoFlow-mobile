@@ -1,7 +1,8 @@
 import 'package:cargo_flow/models/json_model.dart';
 import 'package:cargo_flow/models/vehicle_card_data.dart';
 import 'package:cargo_flow/models/vehicle_status.dart';
-class VehicleForCard implements JsonModel,VehicleCardData {
+
+class VehicleForCard implements JsonModel, VehicleCardData {
   final int vehicleId;
   final String brand;
   final String model;
@@ -27,7 +28,7 @@ class VehicleForCard implements JsonModel,VehicleCardData {
     required this.fromCity,
     required this.toCity,
     required this.vAvatarUrl,
-});
+  });
   @override
   String get capacityText => capacity;
 
@@ -48,29 +49,27 @@ class VehicleForCard implements JsonModel,VehicleCardData {
       type: json["type"] as String,
       year: json["year"] as int,
       cargoVolume: json["cargo_volume"].toString(),
-      status: VehicleStatus.fromString(
-        json["status"] as String,
-      ),
+      status: VehicleStatus.fromString(json["status"] as String),
       deliveryPrice: json["delivery_price"].toString(),
       fromCity: json["from_city"] as String,
       toCity: json["to_city"] as String,
-      vAvatarUrl: json["v_avatar_url"] as String?
+      vAvatarUrl: json["v_avatar_url"] as String?,
     );
   }
   @override
-  Map<String,dynamic>toJson(){
+  Map<String, dynamic> toJson() {
     return {
-      "brand":brand,
-          "model":model,
-          "capacity":capacity,
-          "type":type,
-          "year":year,
-          "cargo_volume":cargoVolume,
-          "status":status,
-          "delivery_price":deliveryPrice,
-      "from_city":fromCity,
-      "to_city":toCity,
-      "v_avatar_url":vAvatarUrl,
+      "brand": brand,
+      "model": model,
+      "capacity": capacity,
+      "type": type,
+      "year": year,
+      "cargo_volume": cargoVolume,
+      "status": status,
+      "delivery_price": deliveryPrice,
+      "from_city": fromCity,
+      "to_city": toCity,
+      "v_avatar_url": vAvatarUrl,
     };
   }
 }

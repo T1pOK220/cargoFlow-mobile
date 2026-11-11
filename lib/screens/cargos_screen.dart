@@ -27,8 +27,13 @@ class _CargosScreenState extends State<CargosScreen> {
   final _maxPrice = TextEditingController();
   final _weight = TextEditingController();
 
-  List<TextEditingController> get _all =>
-      [_fromCity, _toCity, _minPrice, _maxPrice, _weight];
+  List<TextEditingController> get _all => [
+    _fromCity,
+    _toCity,
+    _minPrice,
+    _maxPrice,
+    _weight,
+  ];
 
   @override
   void initState() {

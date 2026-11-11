@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cargo_flow/widgets/auth_field.dart';
+
 typedef DepositData = ({String account, double amount});
 
 String formatAccount(String raw) {
@@ -17,7 +18,9 @@ String formatAccount(String raw) {
 class _AccountNumberFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     final text = formatAccount(newValue.text);
     return TextEditingValue(
       text: text,
@@ -27,7 +30,7 @@ class _AccountNumberFormatter extends TextInputFormatter {
 }
 
 class DepositDialog extends StatefulWidget {
-  const DepositDialog({super.key,this.initialAccount});
+  const DepositDialog({super.key, this.initialAccount});
   final String? initialAccount;
 
   @override
@@ -57,8 +60,8 @@ class DepositDialogState extends State<DepositDialog> {
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
     Navigator.pop<DepositData>(context, (
-    account: _account.text.trim(),
-    amount: double.parse(_amount.text.trim().replaceAll(',', '.')),
+      account: _account.text.trim(),
+      amount: double.parse(_amount.text.trim().replaceAll(',', '.')),
     ));
   }
 
@@ -78,7 +81,7 @@ class DepositDialogState extends State<DepositDialog> {
               keyboardType: TextInputType.number,
               inputFormatters: [_AccountNumberFormatter()],
               validator: (v) =>
-              RegExp(r'^\d{4}-\d{4}-\d{4}-\d{4}$').hasMatch(v ?? '')
+                  RegExp(r'^\d{4}-\d{4}-\d{4}-\d{4}$').hasMatch(v ?? '')
                   ? null
                   : 'Формат: 0000-0000-0000-0000',
               textInputAction: TextInputAction.next,
@@ -88,14 +91,16 @@ class DepositDialogState extends State<DepositDialog> {
               controller: _amount,
               hint: 'Сума, грн',
               icon: Icons.payments_outlined,
-              keyboardType:
-              const TextInputType.numberWithOptions(decimal: true),
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
               inputFormatters: [
                 FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')),
               ],
               validator: (v) {
-                final n =
-                double.tryParse((v ?? '').trim().replaceAll(',', '.'));
+                final n = double.tryParse(
+                  (v ?? '').trim().replaceAll(',', '.'),
+                );
                 return (n == null || n <= 0) ? 'Введіть суму' : null;
               },
               onSubmitted: (_) => _submit(),
@@ -108,10 +113,7 @@ class DepositDialogState extends State<DepositDialog> {
           onPressed: () => Navigator.pop(context),
           child: const Text('Скасувати'),
         ),
-        FilledButton(
-          onPressed: _submit,
-          child: const Text('Поповнити'),
-        ),
+        FilledButton(onPressed: _submit, child: const Text('Поповнити')),
       ],
     );
   }

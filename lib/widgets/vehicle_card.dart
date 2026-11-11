@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cargo_flow/theme/app_theme.dart';
 import 'package:cargo_flow/models/vehicle_card_data.dart';
-
+import 'package:cargo_flow/utils/config.dart';
 class VehicleCard extends StatelessWidget {
-  const VehicleCard({
-    super.key,
-    required this.vehicle,
-    this.onTap,
-  });
+  const VehicleCard({super.key, required this.vehicle, this.onTap});
 
   final VehicleCardData vehicle;
   final VoidCallback? onTap;
-
-  static const String baseUrl = 'http://localhost:5000';
 
   @override
   Widget build(BuildContext context) {
@@ -33,18 +27,18 @@ class VehicleCard extends StatelessWidget {
             children: [
               avatar != null && avatar.isNotEmpty
                   ? Image.network(
-                '$baseUrl$avatar',
-                width: 100,
-                height: 100,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) =>
-                const Icon(Icons.image_not_supported),
-              )
+                      '$baseUrl$avatar',
+                      width: 100,
+                      height: 100,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) =>
+                          const Icon(Icons.image_not_supported),
+                    )
                   : const SizedBox(
-                width: 100,
-                height: 100,
-                child: Icon(Icons.image_not_supported),
-              ),
+                      width: 100,
+                      height: 100,
+                      child: Icon(Icons.image_not_supported),
+                    ),
 
               const SizedBox(width: 20),
 
@@ -75,8 +69,7 @@ class VehicleCard extends StatelessWidget {
 
                     const SizedBox(height: 4),
 
-                    if (vehicle.routeText != null)
-                      Text(vehicle.routeText!),
+                    if (vehicle.routeText != null) Text(vehicle.routeText!),
 
                     const SizedBox(height: 8),
 
@@ -107,18 +100,12 @@ class _Tag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 8,
-        vertical: 3,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(
         color: const Color(0xFFF6F7F9),
         borderRadius: BorderRadius.circular(6),
       ),
-      child: Text(
-        text,
-        style: const TextStyle(fontSize: 12),
-      ),
+      child: Text(text, style: const TextStyle(fontSize: 12)),
     );
   }
 }
@@ -133,14 +120,9 @@ class _StatusTag extends StatelessWidget {
     final free = status == 'Доступний';
 
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 8,
-        vertical: 3,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(
-        color: free
-            ? const Color(0xFFC9F5CD)
-            : const Color(0xFFF6F7F9),
+        color: free ? const Color(0xFFC9F5CD) : const Color(0xFFF6F7F9),
         borderRadius: BorderRadius.circular(6),
       ),
       child: Text(
@@ -148,9 +130,7 @@ class _StatusTag extends StatelessWidget {
         style: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w600,
-          color: free
-              ? const Color(0xFF157A33)
-              : Colors.black54,
+          color: free ? const Color(0xFF157A33) : Colors.black54,
         ),
       ),
     );

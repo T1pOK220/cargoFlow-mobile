@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:cargo_flow/models/vehicle_card.dart';
 import 'package:cargo_flow/models/vehicles_filter.dart';
 import 'package:cargo_flow/models/vehicle.dart';
+
 class VehicleProvider extends ChangeNotifier {
   List<VehicleForCard> _vehicles = [];
   bool _isLoading = false;
@@ -16,7 +17,7 @@ class VehicleProvider extends ChangeNotifier {
   final VehicleService _vehicleService;
   final JsonParser _jsonParser;
   List<Vehicle> _myVehicles = [];
-  VehicleProvider(this._vehicleService,this._jsonParser);
+  VehicleProvider(this._vehicleService, this._jsonParser);
   List<VehicleForCard> get vehicles => _vehicles;
   bool get isLoading => _isLoading;
   String? get error => _error;
@@ -24,31 +25,32 @@ class VehicleProvider extends ChangeNotifier {
   VehicleDetails? get vehicleDetails => _vehicleDetails;
   List<Vehicle> get myVehicles => _myVehicles;
 
-Future<void> fetchVehicles() async {
-try {
-_isLoading = true;
-notifyListeners();
+  Future<void> fetchVehicles() async {
+    try {
+      _isLoading = true;
+      notifyListeners();
 
-final vehicles = await _vehicleService.getVehicles();
+      final vehicles = await _vehicleService.getVehicles();
 
-_vehicles = _jsonParser.parseList(
-vehicles,
-"cars",
-VehicleForCard.fromJson,
-);
+      _vehicles = _jsonParser.parseList(
+        vehicles,
+        "cars",
+        VehicleForCard.fromJson,
+      );
 
-_types = _vehicles.map((v) => v.type).toSet().toList();
-} catch (e,stackTrace) {
-debugPrint('Помилка завантаження автомобілів: $e');
-debugPrint('Помилка: $e');
-debugPrintStack(stackTrace: stackTrace);
-} finally {
-_isLoading = false;
-notifyListeners();
-}
-}
+      _types = _vehicles.map((v) => v.type).toSet().toList();
+    } catch (e, stackTrace) {
+      debugPrint('Помилка завантаження автомобілів: $e');
+      debugPrint('Помилка: $e');
+      debugPrintStack(stackTrace: stackTrace);
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
   Future<void> filterVehicles(VehicleFilter filter) async {
-    try{
+    try {
       if (filter.isEmpty) return await fetchVehicles();
       final vehicles = await _vehicleService.filtersVehicles(filter);
       _vehicles = _jsonParser.parseList(
@@ -57,47 +59,49 @@ notifyListeners();
         VehicleForCard.fromJson,
       );
       notifyListeners();
-    }
-    catch(e){
+    } catch (e) {
       print(e);
       notifyListeners();
     }
   }
-Future<void> details(int id)async{
-  try{
-    _isLoading = true;
-    final info = await _vehicleService.getVehicleDetails(id);
-    _vehicleDetails = VehicleDetails.fromJson(info["carInfo"]);
+
+  Future<void> details(int id) async {
+    try {
+      _isLoading = true;
+      final info = await _vehicleService.getVehicleDetails(id);
+      _vehicleDetails = VehicleDetails.fromJson(info["carInfo"]);
+      notifyListeners();
+    } catch (e) {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> getMyVehicles() async {
+    try {
+      _isLoading = true;
+      final myVehicles = await _vehicleService.getMyVehicles();
+      _myVehicles = _jsonParser.parseList(myVehicles, "cars", Vehicle.fromJson);
+      notifyListeners();
+    } catch (e) {
+      print(e);
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> deleteVehicle(int id) async {
+    await _vehicleService.deleteVehicle(id);
     notifyListeners();
   }
-  catch(e){
-    _isLoading = false;
+
+  Future<void> createVehicle(VehicleCreate vehicle) async {
+    await _vehicleService.createVehicle(vehicle);
     notifyListeners();
   }
-}
-Future<void> getMyVehicles()async{
-  try{
-    _isLoading=true;
-    final myVehicles = await _vehicleService.getMyVehicles();
-    _myVehicles = _jsonParser.parseList(myVehicles, "cars", Vehicle.fromJson);
+
+  Future<void> updateVehicle(VehicleUpdate vehicle) async {
+    await _vehicleService.updateVehicle(vehicle);
     notifyListeners();
   }
-  catch(e){
-    print(e);
-    _isLoading=false;
-    notifyListeners();
-  }
-}
-Future<void> deleteVehicle(int id) async{
-  await _vehicleService.deleteVehicle(id);
-  notifyListeners();
-}
-Future<void> createVehicle(VehicleCreate vehicle)async{
-  await _vehicleService.createVehicle(vehicle);
-  notifyListeners();
-}
-Future<void> updateVehicle(VehicleUpdate vehicle)async{
-  await _vehicleService.updateVehicle(vehicle);
-  notifyListeners();
-}
 }

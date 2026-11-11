@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import '../theme/app_theme.dart';
+
 class HeroBanner extends StatelessWidget implements PreferredSizeWidget {
   const HeroBanner({
     super.key,
@@ -35,6 +37,7 @@ class HeroBanner extends StatelessWidget implements PreferredSizeWidget {
     final statusBar = view.padding.top / view.devicePixelRatio;
     return Size.fromHeight(height + statusBar);
   }
+
   @override
   Widget build(BuildContext context) {
     final top = MediaQuery.paddingOf(context).top;
@@ -82,12 +85,17 @@ class HeroBanner extends StatelessWidget implements PreferredSizeWidget {
                         onTap: onBack,
                         child: const Padding(
                           padding: EdgeInsets.only(right: 8),
-                          child: Icon(Icons.arrow_back_rounded,
-                              color: AppTheme.white),
+                          child: Icon(
+                            Icons.arrow_back_rounded,
+                            color: AppTheme.white,
+                          ),
                         ),
                       ),
-                    const Icon(Icons.bar_chart_rounded,
-                        color: AppTheme.white, size: 30),
+                    const Icon(
+                      Icons.bar_chart_rounded,
+                      color: AppTheme.white,
+                      size: 30,
+                    ),
                     const SizedBox(width: 8),
                     const Text(
                       'CargoFlow',

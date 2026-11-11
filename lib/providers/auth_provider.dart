@@ -10,7 +10,7 @@ class AuthProvider extends ChangeNotifier {
   bool isLoading = false;
   bool isAuthorized = false;
   User? _user;
-  AuthProvider(this._authService,this._jsonParser);
+  AuthProvider(this._authService, this._jsonParser);
   User? get user => _user;
   Future<bool> register({
     required String name,
@@ -19,27 +19,29 @@ class AuthProvider extends ChangeNotifier {
     required String lastName,
     required String phone,
   }) async {
-    try{
+    try {
       isLoading = true;
-      User user = User(name: name, lastName: lastName, email: email, phone: phone, password: password);
+      User user = User(
+        name: name,
+        lastName: lastName,
+        email: email,
+        phone: phone,
+        password: password,
+      );
       await _authService.register(user);
       notifyListeners();
       return true;
-    }
-    catch(e){
+    } catch (e) {
       debugPrint(e as String?);
       isLoading = false;
       return false;
-    }
-    finally{
+    } finally {
       isLoading = false;
       notifyListeners();
     }
   }
-  Future<bool> login({
-    required String email,
-    required String password,
-  }) async {
+
+  Future<bool> login({required String email, required String password}) async {
     try {
       isLoading = true;
       notifyListeners();
@@ -54,9 +56,7 @@ class AuthProvider extends ChangeNotifier {
         return false;
       }
 
-      _user = User.fromJson(
-        Map<String, dynamic>.from(authorized['user']),
-      );
+      _user = User.fromJson(Map<String, dynamic>.from(authorized['user']));
 
       isAuthorized = true;
 
@@ -73,18 +73,19 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-  Future<void>verifyToken()async{
-    try{
+
+  Future<void> verifyToken() async {
+    try {
       var _isAuthorized = await _authService.verifyToken();
       isAuthorized = _isAuthorized;
       notifyListeners();
-    }
-    catch(e){
+    } catch (e) {
       _authService.logOut();
       isAuthorized = false;
       notifyListeners();
     }
   }
+
   Future<void> getUser() async {
     try {
       isLoading = true;
@@ -98,33 +99,45 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-  Future<void>updateProfile(String name,String lastName,String phone,String email)async{
-    try{
-      final user = UserUpdate(name: name, lastName: lastName, email: email, phone: phone);
+
+  Future<void> updateProfile(
+  { required String name,
+    required String lastName,
+     required String email,
+    required String phone,}
+  ) async {
+    try {
+      final user = UserUpdate(
+        name: name,
+        lastName: lastName,
+        email: email,
+        phone: phone,
+      );
       final updateUser = await _authService.updateProfile(user);
       _user = User.fromJson(updateUser["user"]);
       notifyListeners();
-    }
-    catch(e){
+    } catch (e) {
       print(e);
       notifyListeners();
     }
   }
-  Future<void>logOut()async{
+
+  Future<void> logOut() async {
     await _authService.logOut();
     isAuthorized = false;
     _user = null;
     notifyListeners();
   }
-  Future<void> deleteAccount()async{
+
+  Future<void> deleteAccount() async {
     await _authService.deleteAccount();
     logOut();
     _user = null;
   }
-  Future<void> changePassword(String oldPassword,String newPassword)async{
-    Map<String,dynamic> changeRequest = {
-      "oldPassword":oldPassword,
-      "NewPassword":newPassword
+  Future<void> changePassword(String oldPassword, String newPassword) async {
+    Map<String, dynamic> changeRequest = {
+      "oldPassword": oldPassword,
+      "NewPassword": newPassword,
     };
     await _authService.changePassword(changeRequest);
     notifyListeners();

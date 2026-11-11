@@ -75,7 +75,7 @@ class _VehicleEditScreenState extends State<VehicleEditScreen> {
     _type = v.type.isNotEmpty ? v.type : _types.first;
 
     _status = VehicleStatus.values.firstWhere(
-          (s) => s.dbValue == v.status,
+      (s) => s.dbValue == v.status,
       orElse: () => VehicleStatus.values.first,
     );
   }
@@ -110,6 +110,7 @@ class _VehicleEditScreenState extends State<VehicleEditScreen> {
       _newImageBytes = bytes;
     });
   }
+
   String _fmt(double? v) {
     if (v == null) return '';
     return v == v.roundToDouble() ? v.toInt().toString() : v.toString();
@@ -148,8 +149,7 @@ class _VehicleEditScreenState extends State<VehicleEditScreen> {
       if (mounted) {
         AppSnack.error(context, "Не вдалося зберегти зміни");
       }
-    }
-    finally {
+    } finally {
       if (mounted) setState(() => _loading = false);
     }
   }
@@ -180,10 +180,7 @@ class _VehicleEditScreenState extends State<VehicleEditScreen> {
           child: ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              _Section(
-                title: 'Фото',
-                children: [_buildImagePicker()],
-              ),
+              _Section(title: 'Фото', children: [_buildImagePicker()]),
               const SizedBox(height: 16),
               _Section(
                 title: 'Основна інформація',
@@ -253,7 +250,8 @@ class _VehicleEditScreenState extends State<VehicleEditScreen> {
                           hint: 'Вантажопідйомність',
                           icon: Icons.scale_outlined,
                           keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true),
+                            decimal: true,
+                          ),
                           inputFormatters: [_decimalFormatter],
                           validator: _optionalPositiveNumber,
                         ),
@@ -265,7 +263,8 @@ class _VehicleEditScreenState extends State<VehicleEditScreen> {
                           hint: 'Об\'єм, м³',
                           icon: Icons.inventory_2_outlined,
                           keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true),
+                            decimal: true,
+                          ),
                           inputFormatters: [_decimalFormatter],
                           validator: _optionalPositiveNumber,
                         ),
@@ -301,13 +300,13 @@ class _VehicleEditScreenState extends State<VehicleEditScreen> {
                 onPressed: _loading ? null : _submit,
                 child: _loading
                     ? const SizedBox(
-                  height: 22,
-                  width: 22,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2.5,
-                    color: AppTheme.white,
-                  ),
-                )
+                        height: 22,
+                        width: 22,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2.5,
+                          color: AppTheme.white,
+                        ),
+                      )
                     : const Text('Зберегти'),
               ),
               const SizedBox(height: 16),
@@ -361,7 +360,7 @@ class _VehicleEditScreenState extends State<VehicleEditScreen> {
                 right: 8,
                 child: _roundButton(
                   Icons.close,
-                      () => setState(() {
+                  () => setState(() {
                     _newImage = null;
                     _newImageBytes = null;
                   }),
@@ -379,10 +378,7 @@ class _VehicleEditScreenState extends State<VehicleEditScreen> {
       children: [
         Icon(Icons.add_a_photo_outlined, size: 36, color: AppTheme.inputIcon),
         SizedBox(height: 8),
-        Text(
-          'Додати фото',
-          style: TextStyle(color: AppTheme.textSecondary),
-        ),
+        Text('Додати фото', style: TextStyle(color: AppTheme.textSecondary)),
       ],
     );
   }
@@ -398,8 +394,9 @@ class _VehicleEditScreenState extends State<VehicleEditScreen> {
     );
   }
 
-  static final _decimalFormatter =
-  FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'));
+  static final _decimalFormatter = FilteringTextInputFormatter.allow(
+    RegExp(r'[0-9.,]'),
+  );
 
   Widget _field({
     required TextEditingController controller,
@@ -422,10 +419,7 @@ class _VehicleEditScreenState extends State<VehicleEditScreen> {
         textCapitalization: textCapitalization,
         textInputAction: textInputAction,
         maxLines: maxLines,
-        decoration: InputDecoration(
-          hintText: hint,
-          prefixIcon: Icon(icon),
-        ),
+        decoration: InputDecoration(hintText: hint, prefixIcon: Icon(icon)),
       ),
     );
   }
@@ -444,10 +438,7 @@ class _VehicleEditScreenState extends State<VehicleEditScreen> {
         // ignore: deprecated_member_use
         value: value,
         isExpanded: true,
-        decoration: InputDecoration(
-          hintText: hint,
-          prefixIcon: Icon(icon),
-        ),
+        decoration: InputDecoration(hintText: hint, prefixIcon: Icon(icon)),
         items: [
           for (final i in items)
             DropdownMenuItem<T>(value: i, child: Text(label(i))),

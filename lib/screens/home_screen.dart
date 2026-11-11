@@ -49,25 +49,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       backgroundColor: AppTheme.background,
-      body: Stack(
+      // Column замість Stack + Positioned: список починається рівно там,
+      // де реально закінчується шапка, і не налазить на неї.
+      body: Column(
         children: [
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: HeroBanner(
-              text: 'Головна',
-              additionalText:
-              userName != null ? 'Вітаємо, $userName' : 'Вітаємо',
-              height: _bannerHeight,
-            ),
+          HeroBanner(
+            text: 'Головна',
+            additionalText: userName != null
+                ? 'Вітаємо, $userName'
+                : 'Вітаємо',
+            height: _bannerHeight,
           ),
-          // Область прокрутки починається рівно під банером.
-          Positioned(
-            top: _bannerHeight,
-            left: 0,
-            right: 0,
-            bottom: 0,
+          Expanded(
             child: RefreshIndicator(
               color: AppTheme.orange,
               onRefresh: announcementProvider.fetchAnnouncements,
@@ -86,7 +79,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             title: 'Створити вантаж',
                             subtitle: 'Нове оголошення',
                             filled: true,
-                            onTap: widget.onCreateCargo ??
+                            onTap:
+                            widget.onCreateCargo ??
                                     () => context.go('/cargo/create'),
                           ),
                         ),
@@ -97,7 +91,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             title: 'Знайти транспорт',
                             subtitle: 'Підібрати авто',
                             filled: false,
-                            onTap: widget.onFindTransport ??
+                            onTap:
+                            widget.onFindTransport ??
                                     () => context.go('/vehicles'),
                           ),
                         ),
@@ -134,8 +129,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             date: a.createDate,
                             type: a.type,
                             distance: a.distance,
-                            onTap: () => context
-                                .push('/cargos/info/${a.announcementId}'),
+                            onTap: () => context.push(
+                              '/cargos/info/${a.announcementId}',
+                            ),
                           ),
                         ),
                   ],

@@ -1,4 +1,4 @@
-class CargoDetails{
+class CargoDetails {
   final int announcementId;
   final int cargoId;
   final DateTime createDate;
@@ -80,6 +80,7 @@ class CargoDetails{
     );
   }
 }
+
 double _toDouble(dynamic value) {
   if (value is num) return value.toDouble();
   if (value is String) return double.tryParse(value.replaceAll(',', '.')) ?? 0;

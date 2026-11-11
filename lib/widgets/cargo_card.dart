@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../theme/app_theme.dart';
 
 class CargoCard extends StatelessWidget {
@@ -41,22 +42,30 @@ class CargoCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    child: Text('$from → $to',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w700, fontSize: 16)),
-                  ),
-                  Text("$price грн",
+                    child: Text(
+                      '$from → $to',
                       style: const TextStyle(
-                          color: AppTheme.orange, fontWeight: FontWeight.w900)),
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    "$price грн",
+                    style: const TextStyle(
+                      color: AppTheme.orange,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(height: 4),
-              Text(formatingString(date), style: const TextStyle(color: Colors.grey)),
+              Text(
+                formatingString(date),
+                style: const TextStyle(color: Colors.grey),
+              ),
               const SizedBox(height: 8),
-              Wrap(spacing: 6, children: [
-                _Tag(type),
-                _Tag("$distance км"),
-              ]),
+              Wrap(spacing: 6, children: [_Tag(type), _Tag("$distance км")]),
             ],
           ),
         ),
@@ -79,7 +88,8 @@ class _Tag extends StatelessWidget {
     child: Text(text, style: const TextStyle(fontSize: 12)),
   );
 }
-String formatingString(String text){
+
+String formatingString(String text) {
   final date = DateTime.parse(text);
   final month = date.month.toString().padLeft(2, '0');
   final day = date.day.toString().padLeft(2, '0');

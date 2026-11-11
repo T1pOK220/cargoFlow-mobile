@@ -7,6 +7,7 @@ import 'package:cargo_flow/widgets/hero_banner.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cargo_flow/utils/config.dart';
 import 'package:cargo_flow/widgets/app_snack_bar.dart';
+
 class VehicleDetailsScreen extends StatefulWidget {
   const VehicleDetailsScreen({super.key, required this.id});
 
@@ -36,7 +37,7 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
         text: v == null ? 'Автомобіль' : '${v.brand} ${v.model}',
         additionalText: v?.plateNumber,
         showBack: true,
-        onBack: ()=>{context.pop()},
+        onBack: () => {context.pop()},
       ),
       body: RefreshIndicator(
         onRefresh: _refresh,
@@ -73,7 +74,8 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
                         _InfoRow('Об\'єм кузова', '${_num(v.cargoVolume)} м³'),
                       ],
                     ),
-                    if (v.description != null && v.description!.trim().isNotEmpty)
+                    if (v.description != null &&
+                        v.description!.trim().isNotEmpty)
                       _Section(
                         title: 'Опис',
                         icon: Icons.notes_outlined,
@@ -87,9 +89,7 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
                     _Section(
                       title: 'Маршрут',
                       icon: Icons.route_outlined,
-                      children: [
-                        _RouteBlock(v: v),
-                      ],
+                      children: [_RouteBlock(v: v)],
                     ),
                     _Section(
                       title: 'Вартість',
@@ -114,8 +114,9 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
   }
 }
 
-String _num(double value) =>
-    value == value.roundToDouble() ? value.toStringAsFixed(0) : value.toStringAsFixed(1);
+String _num(double value) => value == value.roundToDouble()
+    ? value.toStringAsFixed(0)
+    : value.toStringAsFixed(1);
 
 class _VehicleHeader extends StatelessWidget {
   const _VehicleHeader({required this.v});
@@ -137,13 +138,14 @@ class _VehicleHeader extends StatelessWidget {
             aspectRatio: 16 / 9,
             child: v.vAvatarUrl != null && v.vAvatarUrl!.isNotEmpty
                 ? Image.network(
-              '$baseUrl${v.vAvatarUrl}',
-              fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) => const _ImagePlaceholder(),
-              loadingBuilder: (context, child, progress) => progress == null
-                  ? child
-                  : const Center(child: CircularProgressIndicator()),
-            )
+                    '$baseUrl${v.vAvatarUrl}',
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => const _ImagePlaceholder(),
+                    loadingBuilder: (context, child, progress) =>
+                        progress == null
+                        ? child
+                        : const Center(child: CircularProgressIndicator()),
+                  )
                 : const _ImagePlaceholder(),
           ),
           Padding(
@@ -156,14 +158,16 @@ class _VehicleHeader extends StatelessWidget {
                     children: [
                       Text(
                         '${v.brand} ${v.model}',
-                        style: theme.textTheme.titleLarge
-                            ?.copyWith(fontWeight: FontWeight.w700),
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         '${v.type} • ${v.year}',
-                        style: theme.textTheme.bodyMedium
-                            ?.copyWith(color: scheme.onSurfaceVariant),
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: scheme.onSurfaceVariant,
+                        ),
                       ),
                     ],
                   ),
@@ -188,7 +192,11 @@ class _ImagePlaceholder extends StatelessWidget {
     return Container(
       color: scheme.surfaceContainerHighest,
       alignment: Alignment.center,
-      child: Icon(Icons.local_shipping, size: 64, color: scheme.onSurfaceVariant),
+      child: Icon(
+        Icons.local_shipping,
+        size: 64,
+        color: scheme.onSurfaceVariant,
+      ),
     );
   }
 }
@@ -255,8 +263,9 @@ class _Section extends StatelessWidget {
                   const SizedBox(width: 8),
                   Text(
                     title,
-                    style: theme.textTheme.titleMedium
-                        ?.copyWith(fontWeight: FontWeight.w600),
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ],
               ),
@@ -287,8 +296,9 @@ class _InfoRow extends StatelessWidget {
             flex: 4,
             child: Text(
               label,
-              style: theme.textTheme.bodyMedium
-                  ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
             ),
           ),
           Expanded(
@@ -296,8 +306,9 @@ class _InfoRow extends StatelessWidget {
             child: Text(
               value,
               textAlign: TextAlign.end,
-              style: theme.textTheme.bodyMedium
-                  ?.copyWith(fontWeight: FontWeight.w600),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ],
@@ -305,6 +316,7 @@ class _InfoRow extends StatelessWidget {
     );
   }
 }
+
 class _RouteBlock extends StatelessWidget {
   const _RouteBlock({required this.v});
   final VehicleDetails v;
@@ -324,13 +336,19 @@ class _RouteBlock extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(city,
-                    style: theme.textTheme.bodyLarge
-                        ?.copyWith(fontWeight: FontWeight.w600)),
+                Text(
+                  city,
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
                 if (address != null && address.isNotEmpty)
-                  Text(address,
-                      style: theme.textTheme.bodySmall
-                          ?.copyWith(color: scheme.onSurfaceVariant)),
+                  Text(
+                    address,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: scheme.onSurfaceVariant,
+                    ),
+                  ),
               ],
             ),
           ),
@@ -358,6 +376,7 @@ class _RouteBlock extends StatelessWidget {
     );
   }
 }
+
 class _OwnerBlock extends StatelessWidget {
   const _OwnerBlock({required this.v});
   final VehicleDetails v;
@@ -365,7 +384,7 @@ class _OwnerBlock extends StatelessWidget {
   Future<void> _launch(BuildContext context, Uri uri) async {
     final ok = await launchUrl(uri);
     if (!ok && context.mounted) {
-      AppSnack.error(context,'Не вдалося відкрити');
+      AppSnack.error(context, 'Не вдалося відкрити');
     }
   }
 
@@ -381,20 +400,23 @@ class _OwnerBlock extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 28,
-              backgroundImage: hasAvatar ? NetworkImage('$baseUrl${v.avatarUrl}') : null,
+              backgroundImage: hasAvatar
+                  ? NetworkImage('$baseUrl${v.avatarUrl}')
+                  : null,
               child: hasAvatar
                   ? null
                   : Text(
-                v.name.isNotEmpty ? v.name[0].toUpperCase() : '?',
-                style: theme.textTheme.titleLarge,
-              ),
+                      v.name.isNotEmpty ? v.name[0].toUpperCase() : '?',
+                      style: theme.textTheme.titleLarge,
+                    ),
             ),
             const SizedBox(width: 12),
             Expanded(
               child: Text(
                 fullName,
-                style: theme.textTheme.titleMedium
-                    ?.copyWith(fontWeight: FontWeight.w600),
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ],
@@ -420,7 +442,8 @@ class _OwnerBlock extends StatelessWidget {
         SizedBox(
           width: double.infinity,
           child: FilledButton.icon(
-            onPressed: () => _launch(context, Uri(scheme: 'tel', path: v.phone)),
+            onPressed: () =>
+                _launch(context, Uri(scheme: 'tel', path: v.phone)),
             icon: const Icon(Icons.call),
             label: const Text('Зателефонувати'),
           ),

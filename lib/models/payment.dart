@@ -1,4 +1,3 @@
-
 import 'package:cargo_flow/models/json_model.dart';
 
 enum PaymentStatus {
@@ -10,9 +9,7 @@ enum PaymentStatus {
   const PaymentStatus(this.dbValue);
 
   static PaymentStatus fromString(String value) {
-    return PaymentStatus.values.firstWhere(
-          (status) => status.dbValue == value,
-    );
+    return PaymentStatus.values.firstWhere((status) => status.dbValue == value);
   }
 }
 
@@ -41,9 +38,7 @@ class Payment implements JsonModel {
     return Payment(
       paymentId: json['payment_id'] as int,
       amount: json['amount'].toString(),
-      status: PaymentStatus.fromString(
-        json['status'] as String,
-      ),
+      status: PaymentStatus.fromString(json['status'] as String),
       payDate: DateTime.parse(json['pay_date'] as String),
       type: json['type'] as String,
       senderId: json['sender_id'] as int?,

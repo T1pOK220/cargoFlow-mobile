@@ -13,6 +13,7 @@ class _Range {
   final double? from;
   final double? to;
 }
+
 const _capacityRanges = [
   _Range('1–3 т', 1, 3),
   _Range('3–5 т', 3, 5),
@@ -27,6 +28,7 @@ const _volumeRanges = [
   _Range('60+ м³', 60, null),
 ];
 List<String> types = [];
+
 class VehiclesScreen extends StatefulWidget {
   const VehiclesScreen({super.key});
 

@@ -2,6 +2,7 @@ import 'package:cargo_flow/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 enum _SnackType { success, error, info }
+
 class AppSnack {
   AppSnack._();
 
